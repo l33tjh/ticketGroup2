@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입 페이지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+        @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+        body {
+          font-family: 'Noto Sans KR', sans-serif;
+        }
+        .container {
+            padding: 80px 120px;
+        }
+        .dev {
+        border: 10px solid transparent;
+        margin-bottom: 25px;
+        width: 100%;
+        height: 100%;
+        }
+        .dev:hover {
+        border-color: #f1f1f1;
+        }
+
+        .carousel-inner img {
+            /*filter: grayscale(90%);  make all photos black and white */
+            width: 100%; /* Set width to 100% */
+            margin: auto;
+        }
+
+        .carousel-caption h3 {
+            color: #fff !important;
+        }
+
+        @media (max-width: 600px) {
+            .carousel-caption {
+                display: none; /* Hide the carousel text when the screen is less than 600 pixels wide */
+            }
+        }
+
+        .bg-1 {
+            background: #2d2d30;
+            color: #bdbdbd;
+        }
+        .bg-1 h3 {color: #fff;}
+        .bg-1 p {font-style: italic;}
+        .nav-tabs li a {
+            color: #777;
+        }
+
+        #home, #about, #gallery {
+          margin-top: 60px;
+        }
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        .navbar {
+          margin-bottom: 0;
+          border-radius: 0;
+        }
+
+        /* Add a gray background color and some padding to the footer */
+        footer {
+          background-color: #f2f2f2;
+          padding: 25px;
+        }
+        input {
+            margin-top: 14px;
+        }
+    </style>
+</head>
+<body>
+<div th:if="${errorMessage}" class="alert alert-danger">
+  <p th:text="${errorMessage}"></p>
+</div>
+<!-- 상단 로고 및 로그인/회원가입 창 -->
+<nav class = "navbar navbar-inverse navbar-fixed-top">
+  <div class = "container-fluid">
+    <div class = "navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class = "navbar-brand" href="/main">2조 티켓예매</a>
+    </div>
+    <div id = "menu" class = "collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="nav-item"><a href="#">콘서트</a></li>
+        <li class="nav-item"><a href="#about">뮤지컬</a></li>
+        <li class="nav-item"><a href="#gallery">클래식</a></li>
+        <li class="nav-item"><a href="#post">축제</a></li>
+        <li class="nav-item"><div>
+          <form id="searchForm" method="GET" action="/search">
+            <input type="text" name="keyword" placeholder="검색어 입력">
+            <button type="submit">검색</button>
+          </form>
+        </div>
+        </li>
+      </ul>
+      <ul class="nav navbar navbar-right">
+        <a href="/members/login" class="btn btn-primary mr-2">로그인</a>
+        <a href="/members/new" class="btn-secondary">회원가입</a>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- 회원가입 폼 -->
+<div class="container mt-4">
+  <h2 class="text-center">회원가입</h2>
+  <form th:action="@{/members/new}" method="post" style="max-width: 300px; margin: 0 auto;" th:object="${joinRequest}">
+    <div class="form-group">
+      <input th:field="*{MemberName}" class="form-control" placeholder="이름" required>
+      <div class="error-class" th:errors="*{MemberName}"></div>
+    </div>
+    <div class="form-group">
+      <input th:field="*{MemberEmail}" class="form-control" placeholder="이메일" required>
+      <div class="error-class" th:errors="*{MemberEmail}"></div>
+
+    </div>
+    <div class="form-group">
+      <input type="password" th:field="*{MemberPassword}" class="form-control" placeholder="비밀번호" required>
+    </div>
+    <div class="form-group">
+      <input type="password" th:field="*{MemberPasswordCheck}" class="form-control" placeholder="비밀번호확인" required>
+      <div class="error-class" th:errors="*{MemberPasswordCheck}"></div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">회원가입</button>
+  </form>
+</div>
+</div>
+<script>
+    $(document).ready(function(){
+      // Add scrollspy to <body>
+      $('body').scrollspy({target: ".navbar", offset: 50});
+
+      // Add smooth scrolling on all links inside the navbar
+      $("#myNavbar a").on('click', function(event) {
+        // Make sure this.hash has a value before overriding default behavior
+        if (this.hash !== "") {
+          // Prevent default anchor click behavior
+          event.preventDefault();
+
+          // Store hash
+          var hash = this.hash;
+
+          // Using jQuery's animate() method to add smooth page scroll
+          // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+          $('html, body').animate({
+            scrollTop: $(hash).offset().top
+          }, 800, function(){
+
+            // Add hash (#) to URL when done scrolling (default click behavior)
+            window.location.hash = hash;
+          });
+        }  // End if
+      });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</body>
+</html>
+<style>
+    .error-class {
+        color: red;
+    }
+    .error-input {
+        border-color: red;
+    }
+</style>

@@ -25,12 +25,12 @@
         <span th:text="${post.sid}"></span>
       </th>
       <td>
-        <a th:href="@{'/post/' + ${post.sid}}">
           <span th:text="${post.stype}"></span>
-        </a>
       </td>
       <td>
+        <a th:href="@{'/post/' + ${post.sid}}">
         <span th:text="${post.sname}"></span>
+        </a>
       </td>
       <td>
         <span th:text="${post.sperformer}"></span>

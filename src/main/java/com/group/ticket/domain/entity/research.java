@@ -39,13 +39,17 @@ public class research {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String splace;
 
+    @Column(length = 255) // 길이 조절
+    private String spath; // 추가
+
     @Builder
-    public research(Long sid, String stype, String sname, String sperformer, String sexplain, String splace) {
+    public research(Long sid, String stype, String sname, String sperformer, String sexplain, String splace,String spath) {
         this.sid = sid;
         this.stype = stype;
         this.sname = sname;
         this.sperformer = sperformer;
         this.sexplain = sexplain;
         this.splace = splace;
+        this.spath = spath;
     }
 }

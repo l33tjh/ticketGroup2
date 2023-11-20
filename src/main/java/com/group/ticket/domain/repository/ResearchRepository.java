@@ -11,4 +11,6 @@ public interface ResearchRepository extends JpaRepository<research, Long> {
     List<research> findBySnameContaining(String keyword);
     @Query("SELECT r FROM research r WHERE r.stype LIKE %:keyword% OR r.sname LIKE %:keyword% OR r.sperformer LIKE %:keyword% OR r.sexplain LIKE %:keyword% OR r.splace LIKE %:keyword%")
     List<research> findByKeywordContaining(@Param("keyword") String keyword);
+
+    List<research> findBySpathContaining(String keyword);
 }

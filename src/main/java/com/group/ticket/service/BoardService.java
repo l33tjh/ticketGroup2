@@ -49,6 +49,12 @@ public class BoardService {
         List<research> researchList = researchRepository.findByKeywordContaining(keyword);
         return mapResearchEntitiesToDAOs(researchList);
     }
+    public List<ResearchDAO> searchResearchByImagePath(String keyword) {
+        List<research> researchResults = researchRepository.findBySpathContaining(keyword);
+        return researchResults.stream()
+                .map(ResearchDAO::new)
+                .collect(Collectors.toList());
+    }
     private List<ResearchDAO> mapResearchEntitiesToDAOs(List<research> researchList) {
         return researchList.stream()
                 .map(research -> ResearchDAO.builder()
@@ -73,5 +79,10 @@ public class BoardService {
                 .createdDate(board.getCreatedDate())
                 .build();
         return boardDAO;
+    }
+    @Transactional
+    public ResearchDAO getResearch(Long id) {
+        research research = researchRepository.findById(id).orElseThrow(() -> new RuntimeException("해당 ID의 공연이 없습니다."));
+        return new ResearchDAO(research);
     }
 }
