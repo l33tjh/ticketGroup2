@@ -62,7 +62,7 @@
         <button class="date-button" id="date-button1">일정 1 선택</button>
         <button class="date-button" id="date-button2">일정 2 선택</button>
         <button class="date-button" id="date-button3">일정 3 선택</button>
-        <button class="book-button" th:onclick="'redirectToSeatSelection(\'' + ${post.sid} + '\')'">좌석 선택</button>
+        <button class="book-button" th:attr="data-sid=${post.sid}, data-sname=${post.sname}" onclick="redirectToSeatSelection(this)">좌석 선택</button>
 
     </div>
 </div>
@@ -90,11 +90,12 @@
         });
     });
 
-    function redirectToSeatSelection(sid) {
+    function redirectToSeatSelection(button) {
+        var sid = button.getAttribute('data-sid');
+        var sname = button.getAttribute('data-sname');
         // 다른 HTML 파일로 이동
-        window.location.href = '/cseat/select?sid=' + encodeURIComponent(sid);
-    }
-
+        window.location.href = '/cseat/select?sid=' + encodeURIComponent(sid) + '&sname=' + encodeURIComponent(sname);
+        }
 </script>
 </body>
 </html>

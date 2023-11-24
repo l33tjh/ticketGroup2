@@ -55,19 +55,27 @@
             height: auto;
         }
     </style>
-    <script>
-        IMP.init("imp81265272");
-        const onClickPay = async () => {
-            IMP.request_pay({
-                pg: "kakaopay",
-                pay_method: "card",
-                amount: "48000"        // 공연 가격
-                name: "임영웅",         // 공연 이름
-                merchant_uid: "ORD20231122_000002",
-            });
-        };
-    </script>
 </head>
+<script>
+const selectedSeats = [];
+IMP.init("imp81265272");
+
+const onClickPay = async () => {
+
+    let selectedSeatsCount = selectedSeats.length;
+    const amount_seat = 24000;
+    // 총 결제 금액 계산
+    const totalAmount = amount_seat * selectedSeatsCount;
+
+    IMP.request_pay({
+        pg: "kakaopay",
+        pay_method: "card",
+        amount: String(totalAmount),
+        name: sname,
+        merchant_uid: "ORD20231122_000002",
+    });
+};
+</script>
 <body>
 <div class="selection-panel">
     <h2>선택된 좌석</h2>
@@ -87,6 +95,7 @@
     const rows = 'ABCDEFG';
     urlParams = new URLSearchParams(window.location.search);
     const sid = urlParams.get('sid');
+    const sname = urlParams.get('sname');
     const email = document.getElementById('email').innerText;
 
     for (let row = 0; row < rows.length; row++) {
@@ -95,9 +104,6 @@
             seats.push({ id: seatId });
         }
     }
-
-    // 선택한 좌석을 저장하는 배열
-    const selectedSeats = [];
 
     // 좌석 선택 및 해제를 처리하는 함수
     function toggleSeatSelection(seatId) {
@@ -117,7 +123,6 @@
                 selectedSeats.push(seatId);
             }
         }
-
         updateSelectedSeatText();
     }
 
@@ -173,6 +178,11 @@
     }
     // 결제 버튼 클릭 시의 처리를 추가합니다.
     document.getElementById('checkout-button').addEventListener('click', () => {
+
+        const amount_seat= 24000;
+        const totalAmount = amount_seat * selectedSeatsCount;
+        console.log('amount :', totalAmount);
+
         if (selectedSeats.length > 0) {
             const dataToSend = {
                 seats: selectedSeats,
@@ -213,10 +223,12 @@
         alert('오류가 발생했습니다.');
     });
 }
+
     // 페이지 로드 시 좌석 목록을 화면에 표시합니다.
 window.onload = function () {
     console.log('post.sid 값:', sid);
     console.log('email 값:', document.getElementById('email').innerText);
+    console.log('post.sname 값:', sname);
     // 좌석 목록 표시 함수 호출
     displaySeats();
 };
