@@ -14,7 +14,7 @@ public class MemberEntity { //table 역할
     //jpa ==> database를 객체처럼 사용 가능
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mno;
     @Column
     private String memberPassword;
@@ -32,13 +32,12 @@ public class MemberEntity { //table 역할
         return null;
     }
 
-    public static MemberEntity toMemberEntity(MemberEntity memberDTO){
+    public static MemberEntity toMemberEntity(MemberEntity memberEnt){
         MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setMemberEmail(memberDTO.getMemberEmail());
-        memberEntity.setMemberName(memberDTO.getMemberName());
-        memberEntity.setMemberPassword(memberDTO.getMemberPassword());
+        memberEntity.setMemberEmail(memberEnt.getMemberEmail());
+        memberEntity.setMemberName(memberEnt.getMemberName());
+        memberEntity.setMemberPassword(memberEnt.getMemberPassword());
         return memberEntity;
     }
-
 
 }

@@ -6,7 +6,21 @@
   <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
 </head>
 <body>
-<header th:insert="common/header.html"></header>
+<header th:insert="~{common/header.html}"></header>
+<ul class="nav navbar navbar-right">
+  <a th:href="|/${loginType}|"></a>
+  <div th:if="${name == null}">
+    <a href="/members/login" class="nav-item">로그인</a>
+    <a>/</a>
+    <a href="/members/new" class="nav-item">회원가입</a>
+  </div>
+  <div th:unless="${name == null}">
+    <a>[[${name}]]님 환영합니다!</a>
+    <a href="/logout" class="nav-item">로그아웃</a>
+    <a>/</a>
+    <a href="/mypage" class="nav-item">마이페이지</a>
+  </div>
+</ul>
 <div class="container">
   <table class="table">
     <thead class="thead-light">

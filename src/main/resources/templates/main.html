@@ -69,6 +69,10 @@
     input {
 		margin-top: 14px;
 	}
+	.poster {
+	  width: 100%;
+	  height: auto;
+	}
   </style>
 </head>
 <body>
@@ -86,7 +90,7 @@
     </div>
     <div id = "menu" class = "collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li class="nav-item"><a href="#">콘서트</a></li>
+        <li class="nav-item"><a href="#concert">콘서트</a></li>
         <li class="nav-item"><a href="#musical">뮤지컬</a></li>
         <li class="nav-item"><a href="#classic">클래식</a></li>
         <li class="nav-item"><a href="#festival">축제</a></li>
@@ -101,15 +105,13 @@
       <ul class="nav navbar navbar-right">
         <a th:href="|/${loginType}|"></a>
         <div th:if="${name == null}">
-          <a href="/members/login" class="nav-item">로그인</a>
-          <a>/</a>
-          <a href="/members/new" class="nav-item">회원가입</a>
+          <a href="/members/login" class="btn btn-primary mr-2">로그인</a>
+          <a href="/members/new" class="btn btn-primary mr-2">회원가입</a>
         </div>
         <div th:unless="${name == null}">
           <a>[[${name}]]님 환영합니다!</a>
-          <a href="/logout" class="nav-item">로그아웃</a>
-          <a>/</a>
-          <a href="/mypage" class="nav-item">마이페이지</a>
+          <a href="/logout" class="btn btn-primary mr-2">로그아웃</a>
+          <a href="/members/mypage" class="btn btn-primary mr-2">마이페이지</a>
         </div>
       </ul>
     </div>
@@ -121,17 +123,17 @@
   <!-- slide -->
   <div class="carousel-inner">
     <div class="item active">
-      <img src="images/임영웅.jpg">
+      <img src="/images/임영웅.jpg" alt="콘서트 이미지"/>
       <div class="carousel-caption">
       </div>
     </div>
     <div class="item">
-      <img src="images/concert2.jpg">
+      <img src="/images/아이유.jpg">
       <div class="carousel-caption">
       </div>
     </div>
     <div class="item">
-      <img src="images/concert3.jpg">
+      <img src="/images/싸이.jpg">
       <div class="carousel-caption">
       </div>
     </div>
@@ -148,7 +150,7 @@
 </div>
 
 <!-- Main Content -->
-<div class="container-fluid text-center" id="">
+<div class="container-fluid text-center" id="concert">
   <h1>예매 예정 콘서트</h1>
   <h4>놓치지 말고 기간을 확인하세요!</h4>
   <p>설명</p>
@@ -157,7 +159,7 @@
     <div class="col-sm-4">
       <p><strong>콘서트1</strong></p>
       <a href="#one" data-toggle="collapse">
-        <img src="images/.jpg">
+        <img src="/images/임영웅.jpg" class="poster" alt="콘서트1 포스터">
       </a>
       <div id="one" class="collapse">
         <a href=""><p>콘서트1</p></a>
@@ -166,7 +168,7 @@
     <div class="col-sm-4">
       <p><strong>콘서트2</strong></p>
       <a href="#two" data-toggle="collapse">
-        <img src="images/concert2.jpg">
+        <img src="/images/아이유.jpg" class="poster" alt="콘서트2 포스터">
       </a>
       <div id="two" class="collapse">
         <a href=""><p>콘서트2</p></a>
@@ -175,7 +177,7 @@
     <div class="col-sm-4">
       <p><strong>콘서트3</strong></p>
       <a href="#third" data-toggle="collapse">
-        <img src="3.png">
+        <img src="/images/싸이.jpg" class="poster" alt="콘서트3 포스터">
       </a>
       <div id="third" class="collapse">
         <a href=""><p>콘서트3</p></a>
@@ -184,7 +186,7 @@
   </div>
 </div>
 
-<div class="container-fluid text-center" id="">
+<div class="container-fluid text-center" id="musical">
   <h1>뮤지컬</h1>
   <h4>놓치지 말고 기간을 확인하세요!</h4>
   <p>설명</p>
@@ -193,7 +195,7 @@
     <div class="col-sm-4">
       <p><strong>뮤1</strong></p>
       <a href="#one" data-toggle="collapse">
-        <img src="/images/4.png">
+        <img src="/images/레미제라블.jpg" class="poster">
       </a>
       <div id="one" class="collapse">
         <a href=""><p>뮤1</p></a>
@@ -202,7 +204,7 @@
     <div class="col-sm-4">
       <p><strong>뮤2</strong></p>
       <a href="#two" data-toggle="collapse">
-        <img src="/images/5.png">
+        <img src="/images/엘리자벳.jpg" class="poster">
       </a>
       <div id="two" class="collapse">
         <a href=""><p>뮤2</p></a>
@@ -211,7 +213,7 @@
     <div class="col-sm-4">
       <p><strong>뮤3</strong></p>
       <a href="#third" data-toggle="collapse">
-        <img src="3.png">
+        <img src="/images/몬테크리스토.jpg" class="poster">
       </a>
       <div id="third" class="collapse">
         <a href=""><p>뮤3</p></a>
@@ -220,7 +222,7 @@
   </div>
 </div>
 
-<div class="container-fluid text-center" id="">
+<div class="container-fluid text-center" id="classic">
   <h1>클래식</h1>
   <h4>놓치지 말고 기간을 확인하세요!</h4>
   <p>설명</p>
@@ -229,7 +231,7 @@
     <div class="col-sm-4">
       <p><strong>클1</strong></p>
       <a href="#one" data-toggle="collapse">
-        <img src="/images/4.png">
+        <img src="/images/에라토앙상블.jpg" class="poster">
       </a>
       <div id="one" class="collapse">
         <a href=""><p>클1</p></a>
@@ -238,7 +240,7 @@
     <div class="col-sm-4">
       <p><strong>클2</strong></p>
       <a href="#two" data-toggle="collapse">
-        <img src="/images/5.png">
+        <img src="/images/김다미.jpg" class="poster">
       </a>
       <div id="two" class="collapse">
         <a href=""><p>클2</p></a>
@@ -247,7 +249,7 @@
     <div class="col-sm-4">
       <p><strong>클3</strong></p>
       <a href="#third" data-toggle="collapse">
-        <img src="3.png">
+        <img src="/images/서희태.jpg" class="poster">
       </a>
       <div id="third" class="collapse">
         <a href=""><p>클3</p></a>
@@ -265,7 +267,7 @@
     <div class="col-sm-4">
       <p><strong>축1</strong></p>
       <a href="#one" data-toggle="collapse">
-        <img src="/images/4.png">
+        <img src="/images/부여서동연꽃축제.jpg" class="poster">
       </a>
       <div id="one" class="collapse">
         <a href=""><p>축1</p></a>
@@ -274,7 +276,7 @@
     <div class="col-sm-4">
       <p><strong>축2</strong></p>
       <a href="#two" data-toggle="collapse">
-        <img src="/images/5.png">
+        <img src="/images/부천벚꽃축제.jpg" class="poster">
       </a>
       <div id="two" class="collapse">
         <a href=""><p>축2</p></a>
@@ -283,7 +285,7 @@
     <div class="col-sm-4">
       <p><strong>축3</strong></p>
       <a href="#third" data-toggle="collapse">
-        <img src="3.png">
+        <img src="/images/이천쌀문화축제.jpg" class="poster">
       </a>
       <div id="third" class="collapse">
         <a href=""><p>축3</p></a>
@@ -291,50 +293,6 @@
     </div>
   </div>
 </div>
-
-<div class="bg-1">
-  <div class="container">
-    <h3 class="text-center">핫딜</h3>
-    <p class="text-center">오늘의 베스트 상품</p>
-    <ul class="list-group">
-      <li class="list-group-item">콘1
-        <span class="label label-danger" style="margin-left: 10px">65,800원</span>
-      </li>
-      <li class="list-group-item">뮤1
-        <span class="label label-info" style="margin-left: 10px">65,800원</span>
-      </li>
-      <li class="list-group-item">축1
-        <span class="label label-success" style="margin-left: 10px">65,800원</span>
-      </li>
-      <li class="list-group-item">클1
-        <span class="label label-warning " style="margin-left: 10px">65,800원</span>
-      </li>
-    </ul>
-    <button type="button" class="btm btn-info btn-lg" data-toggle="modal" data-target="#modalbox">버튼1
-    </button>
-
-    <!-- Modal -->
-    <div id="modalbox" class = "modal fade" role="dialog">
-      <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4>다른 예매 정보</h4>
-          </div>
-          <div class="modal-body">
-            <a href="https://www.wishbeen.co.kr/plan/d0093238de9bcb77"><p>1</p></a>
-            <a href="https://www.wishbeen.co.kr/plan/5baa00938f44a8a5"><p>2</p></a>
-            <p>3</p>
-            <p>4</p>
-            <p>5</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 

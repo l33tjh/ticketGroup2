@@ -44,7 +44,7 @@
 <body>
 <div class="screen">
     <h2 th:text="${post.sname}"></h2>
-    <img src="@{'images/' + ${post.sid} + '.jpg'}" alt="콘서트 포스터" class="concert-poster" />
+    <img th:src="@{'/images/' + ${post.sperformer} + '.jpg'}" alt="콘서트 포스터" class="concert-poster" />
 </div>
 <div class="screen">
     <h2>포스터 정보<br>
@@ -62,13 +62,24 @@
         <button class="date-button" id="date-button1">일정 1 선택</button>
         <button class="date-button" id="date-button2">일정 2 선택</button>
         <button class="date-button" id="date-button3">일정 3 선택</button>
-        <button class="book-button" onclick="redirectToSeatSelection()">좌석 선택</button>
+        <button class="book-button" th:onclick="'redirectToSeatSelection(\'' + ${post.sid} + '\')'">좌석 선택</button>
+
     </div>
 </div>
-<div id="user-buttons">
-    <button onclick="login()">로그인</button>
-    <button onclick="signup()">회원가입</button>
-</div>
+<ul class="nav navbar navbar-right">
+    <a th:href="|/${loginType}|"></a>
+    <div th:if="${name == null}">
+        <a href="/members/login" class="nav-item">로그인</a>
+        <a>/</a>
+        <a href="/members/new" class="nav-item">회원가입</a>
+    </div>
+    <div th:unless="${name == null}">
+        <a>[[${name}]]님 환영합니다!</a>
+        <a href="/logout" class="nav-item">로그아웃</a>
+        <a>/</a>
+        <a href="/mypage" class="nav-item">마이페이지</a>
+    </div>
+</ul>
 <script>
     const dateInput = document.getElementById('date-input');
     const dateButtons = document.querySelectorAll('.date-button');
@@ -79,9 +90,9 @@
         });
     });
 
-    function redirectToSeatSelection() {
+    function redirectToSeatSelection(sid) {
         // 다른 HTML 파일로 이동
-        window.location.href = 'CSeatSelect.html';
+        window.location.href = '/cseat/select?sid=' + encodeURIComponent(sid);
     }
 
 </script>

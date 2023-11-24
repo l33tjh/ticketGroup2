@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class ProducerController {
@@ -23,15 +24,21 @@ public class ProducerController {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @PostMapping("/ticket/queue")
-    public Map<String, String> Publish(@RequestBody List<String> selectedSeats) {
-        //        MessageTest messageTest = null;
+    public Map<String, String> Publish(@RequestBody Map<String, Object> requestData) {
         try {
-//            messageTest = new MessageTest("testID", "TestCon", 15000);
-            String json = objectMapper.writeValueAsString(selectedSeats);
+            List<String> selectedSeats = (List<String>) requestData.get("seats");
+            String sid = (String) requestData.get("sid");
+            String email = (String) requestData.get("email");
+
+            Map<String, Object> messageData = new HashMap<>();
+            messageData.put("selectedSeats", selectedSeats);
+            messageData.put("sid", sid);
+            messageData.put("email", email);
+
+            String json = objectMapper.writeValueAsString(messageData);
             rabbitTemplate.convertAndSend("ticket.queue", json);
 
             Map<String, String> response = new HashMap<>();
-            response.put("message", "예매가 완료되었습니다");
             return response;
         } catch (JsonProcessingException e) {
             e.printStackTrace();

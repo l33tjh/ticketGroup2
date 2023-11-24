@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class research {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sid;
 
     @Column(length = 10, nullable = false)

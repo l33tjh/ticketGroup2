@@ -84,7 +84,12 @@ public class MemberService {
 
         return optionalUser.get();
     }
+    public String getEmailByMno(Long Mno) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMno(Mno);
+        if (optionalMemberEntity.isEmpty()) return null;
 
+        return optionalMemberEntity.get().getMemberEmail();
+    }
     /**
      * loginId(String)를 입력받아 User을 return 해주는 기능
      * 인증, 인가 시 사용
@@ -104,56 +109,19 @@ public class MemberService {
      * 현재 이메일에 맞는 비밀번호인지 확인
      * 비밀번호와 비밀번호 확인이 같은지 확인
      */
-    public boolean changePassword(ChangePasswordRequest req){
-        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(req.getMemberEmail());
+    public boolean changePassword(ChangePasswordRequest req,MemberEntity memberEntity){
 
-        if(optionalMemberEntity.isPresent()) {
-            MemberEntity memberEntity = optionalMemberEntity.get();
-            // 찾아온 Member의 password와 입력된 현재 password가 일치하는지 확인
-            if(memberEntity.getMemberPassword().equals(req.getCurrentPassword())){
-                // 새 비밀번호와 비밀번호 확인이 같은지 확인
-                if(req.getMemberPassword().equals(req.getMemberPasswordCheck())) {
-                    // 새 비밀번호로 업데이트
-                    memberEntity.setMemberPassword(req.getMemberPassword());
-                    // 변경된 정보를 데이터베이스에 저장
-                    memberRepository.save(memberEntity);
-                    return true; // 변경된 MemberEntity 반환
-                }
+        // 찾아온 Member의 password와 입력된 현재 password가 일치하는지 확인
+        if(memberEntity.getMemberPassword().equals(req.getCurrentPassword())){
+            // 새 비밀번호와 비밀번호 확인이 같은지 확인
+            if(req.getMemberPassword().equals(req.getMemberPasswordCheck())) {
+                // 새 비밀번호로 업데이트
+                memberEntity.setMemberPassword(req.getMemberPassword());
+                // 변경된 정보를 데이터베이스에 저장
+                memberRepository.save(memberEntity);
+                return true; // 변경된 MemberEntity 반환
             }
         }
         return false; // 조건에 부합하지 않을 경우 null 반환
     }
-
-
-//    public MemberDTO login (MemberDTO memberDTO) {
-//        Optional<MemberEntity> byEmail = memberRepository.findByMemberEmail(memberDTO.getMemberEmail());
-//            if (byEmail.isPresent()) {
-//                // 조회 결과가 있는 경우
-//                MemberEntity memberEntity = byEmail.get();
-//                if (memberEntity.getMemberPassword().equals(memberDTO.getMemberPassword())) {
-//                    // 비밀번호 일치
-//                    // entity -> dto 변환 후 리턴
-//                    MemberDTO dto = MemberDTO.toMemberDTO(memberEntity);
-//                    return dto;
-//                } else {
-//                    // 비밀번호 불일치
-//                    return null;
-//                }
-//            }
-//            else {
-//                return null;
-//            }
-//    }
-
-
-/*
-    //전체 회원 조회
-    public List<MemberEntity> findMembers() {
-        return memberRepository.findAll();
-    }
-*/
-
-   /* public Optional <MemberEntity> findOne(Long Mno){
-        return memberRepository.findByMno(Mno);
-    }*/
 }

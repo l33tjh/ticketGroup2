@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <title>좌석 선택</title>
     <style>
         /* 스타일링을 위한 CSS 코드를 추가합니다. */
@@ -47,23 +50,45 @@
             border: none;
             cursor: pointer;
         }
+        .concert-poster {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
+    <script>
+        IMP.init("imp81265272");
+        const onClickPay = async () => {
+            IMP.request_pay({
+                pg: "kakaopay",
+                pay_method: "card",
+                amount: "48000"        // 공연 가격
+                name: "임영웅",         // 공연 이름
+                merchant_uid: "ORD20231122_000002",
+            });
+        };
+    </script>
 </head>
 <body>
 <div class="selection-panel">
     <h2>선택된 좌석</h2>
     <ul id="selected-seats"></ul>
-    <button id="checkout-button">결제하기</button>
+    <button onclick="onClickPay()" id="checkout-button">결제하기</button>
 </div>
-
+<div id="concert-image-container">
+    <img id="concert-image" class="concert-poster" />
+</div>
 <div id="seat-map" class="seat-map">
-    <!-- 좌석 목록은 JavaScript로 동적으로 추가됩니다. -->
 </div>
+<div id="email" th:text="${email}" style="display: none;"></div>
 
 <script>
     // 좌석 데이터 (10개씩 총 70개)
     const seats = [];
     const rows = 'ABCDEFG';
+    urlParams = new URLSearchParams(window.location.search);
+    const sid = urlParams.get('sid');
+    const email = document.getElementById('email').innerText;
+
     for (let row = 0; row < rows.length; row++) {
         for (let seatNum = 1; seatNum <= 10; seatNum++) {
             const seatId = `${rows[row]}${seatNum}`;
@@ -107,7 +132,6 @@
             selectedSeatsList.appendChild(listItem);
         });
     }
-
     // 좌석 목록을 화면에 표시하는 함수
     function displaySeats() {
         const seatMap = document.getElementById('seat-map');
@@ -115,30 +139,56 @@
         seats.forEach(seat => {
             const seatElement = document.createElement('div');
             seatElement.classList.add('seat');
+
+            if (seat.reserved) {
+                seatElement.classList.add('reserved');
+            }
+
             seatElement.textContent = seat.id;
             seatElement.id = seat.id;
 
             // 좌석 클릭 이벤트를 추가합니다.
             seatElement.addEventListener('click', () => {
-                toggleSeatSelection(seat.id);
+                if (!seat.reserved) {
+                    toggleSeatSelection(seat.id);
+                }
             });
 
             seatMap.appendChild(seatElement);
         });
+
+        // 예약된 좌석 비활성화
+        disableReservedSeats();
     }
 
+    // 예약된 좌석을 비활성화하는 함수
+    function disableReservedSeats() {
+        seats.forEach(seat => {
+            if (seat.reserved) {
+                const reservedSeatElement = document.getElementById(seat.id);
+                reservedSeatElement.classList.add('reserved');
+                reservedSeatElement.removeEventListener('click', () => toggleSeatSelection(seat.id));
+            }
+        });
+    }
     // 결제 버튼 클릭 시의 처리를 추가합니다.
     document.getElementById('checkout-button').addEventListener('click', () => {
         if (selectedSeats.length > 0) {
-            sendSelectedSeatsToQueue(selectedSeats);
+            const dataToSend = {
+                seats: selectedSeats,
+                sid: sid,
+                email: email
+            };
+            sendSelectedSeatsToQueue(dataToSend);
         } else {
             alert('좌석을 선택해주세요.');
         }
     });
 
     // TO RABBITMQ
-    function sendSelectedSeatsToQueue(selectedSeats) {
-    const json = JSON.stringify(selectedSeats);
+    function sendSelectedSeatsToQueue(dataToSend) {
+    console.log(dataToSend);
+    const json = JSON.stringify(dataToSend);
 
     const rabbitMQConfig = {
         host: 'localhost',
@@ -164,9 +214,12 @@
     });
 }
     // 페이지 로드 시 좌석 목록을 화면에 표시합니다.
-    window.onload = function () {
-        displaySeats();
-    };
+window.onload = function () {
+    console.log('post.sid 값:', sid);
+    console.log('email 값:', document.getElementById('email').innerText);
+    // 좌석 목록 표시 함수 호출
+    displaySeats();
+};
 </script>
 </body>
 </html>
