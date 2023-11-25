@@ -58,22 +58,40 @@
 </head>
 <script>
 const selectedSeats = [];
+let randomStr;
+const generateRandomString = (num) => {
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < num; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+     return result;
+    }
+
+
 IMP.init("imp81265272");
 
 const onClickPay = async () => {
-
-    let selectedSeatsCount = selectedSeats.length;
-    const amount_seat = 24000;
-    // 총 결제 금액 계산
-    const totalAmount = amount_seat * selectedSeatsCount;
-
-    IMP.request_pay({
-        pg: "kakaopay",
-        pay_method: "card",
-        amount: String(totalAmount),
-        name: sname,
-        merchant_uid: "ORD20231122_000002",
-    });
+        randomStr = generateRandomString(10);
+        let selectedSeatsCount = selectedSeats.length;
+        const amount_seat = 24000;
+        // 총 결제 금액 계산
+        let totalAmount = amount_seat * selectedSeatsCount;
+        IMP.request_pay({
+            pg: "kakaopay",
+            pay_method: "card",
+            amount: String(totalAmount),
+            name: sname,
+            merchant_uid: randomStr,
+        }, rsp => {
+                    if(rsp.success) {
+                                        alert("결제에 성공하셨습니다.");
+                                        window.location.href="/";
+                                     }
+                    else { alert("결제에 실패하셨습니다 ");
+                    }
+   });
 };
 </script>
 <body>
@@ -179,10 +197,6 @@ const onClickPay = async () => {
     // 결제 버튼 클릭 시의 처리를 추가합니다.
     document.getElementById('checkout-button').addEventListener('click', () => {
 
-        const amount_seat= 24000;
-        const totalAmount = amount_seat * selectedSeatsCount;
-        console.log('amount :', totalAmount);
-
         if (selectedSeats.length > 0) {
             const dataToSend = {
                 seats: selectedSeats,
@@ -214,9 +228,8 @@ const onClickPay = async () => {
         },
         body: json,
     })
-    .then(response => response.json())
+    .then((response) => response.json())
     .then(data => {
-        alert(data.message); // 서버에서 받은 응답 메세지를 알림창으로 표시
     })
     .catch(error => {
         console.error('Error:', error);

@@ -1,26 +1,118 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" >
 <head>
   <meta charset="UTF-8" />
-  <title>검색 결과</title>
-  <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <style>
+    @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .container {
+        padding: 80px 120px;
+    }
+    .dev {
+    border: 10px solid transparent;
+    margin-bottom: 25px;
+    width: 100%;
+    height: 100%;
+    }
+    .dev:hover {
+    border-color: #f1f1f1;
+    }
+
+    .carousel-inner img {
+        /*filter: grayscale(90%);  make all photos black and white */
+        width: 100%; /* Set width to 100% */
+        margin: auto;
+    }
+
+    .carousel-caption h3 {
+        color: #fff !important;
+    }
+
+    @media (max-width: 600px) {
+        .carousel-caption {
+            display: none; /* Hide the carousel text when the screen is less than 600 pixels wide */
+        }
+    }
+
+    .bg-1 {
+        background: #2d2d30;
+        color: #bdbdbd;
+    }
+    .bg-1 h3 {color: #fff;}
+    .bg-1 p {font-style: italic;}
+    .nav-tabs li a {
+        color: #777;
+    }
+
+    #home, #about, #gallery {
+      margin-top: 60px;
+    }
+    /* Remove the navbar's default margin-bottom and rounded borders */
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+    input {
+		margin-top: 14px;
+	}
+  </style>
 </head>
 <body>
-<header th:insert="~{common/header.html}"></header>
-<ul class="nav navbar navbar-right">
-  <a th:href="|/${loginType}|"></a>
-  <div th:if="${name == null}">
-    <a href="/members/login" class="nav-item">로그인</a>
-    <a>/</a>
-    <a href="/members/new" class="nav-item">회원가입</a>
+<nav class = "navbar navbar-inverse navbar-fixed-top">
+  <div class = "container-fluid">
+    <div class = "navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class = "navbar-brand" href="/">2조 티켓예매</a>
+    </div>
+    <div id = "menu" class = "collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="nav-item"><a href="#concert">콘서트</a></li>
+        <li class="nav-item"><a href="#musical">뮤지컬</a></li>
+        <li class="nav-item"><a href="#classic">클래식</a></li>
+        <li class="nav-item"><a href="#festival">축제</a></li>
+        <li class="nav-item"><div>
+          <form id="searchForm" method="GET" action="/search">
+            <input type="text" name="keyword" placeholder="검색어 입력">
+            <button type="submit">검색</button>
+          </form>
+        </div>
+        </li>
+      </ul>
+      <ul class="nav navbar navbar-right">
+        <a th:href="|/${loginType}|"></a>
+        <div th:if="${name == null}">
+          <a href="/members/login" class="btn btn-primary mr-2">로그인</a>
+          <a href="/members/new" class="btn btn-primary mr-2">회원가입</a>
+        </div>
+        <div th:unless="${name == null}">
+          <a>[[${name}]]님 환영합니다!</a>
+          <a href="/logout" class="btn btn-primary mr-2">로그아웃</a>
+          <a href="/members/mypage" class="btn btn-primary mr-2">마이페이지</a>
+        </div>
+      </ul>
+    </div>
   </div>
-  <div th:unless="${name == null}">
-    <a>[[${name}]]님 환영합니다!</a>
-    <a href="/logout" class="nav-item">로그아웃</a>
-    <a>/</a>
-    <a href="/mypage" class="nav-item">마이페이지</a>
-  </div>
-</ul>
+</nav>
 <div class="container">
   <table class="table">
     <thead class="thead-light">

@@ -2,6 +2,11 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>콘서트 정보</title>
     <style>
         /* 스타일링을 위한 CSS 코드를 추가합니다. */
@@ -17,6 +22,7 @@
             flex: 1;
             padding: 20px;
             border: 1px solid #ccc;
+            margin-top: 40px;
         }
         .concert-poster {
             max-width: 100%;
@@ -25,29 +31,54 @@
         .concert-description, .date-selection {
             margin: 30px 10px;
         }
-        .date-button, .book-button, .login-button, .signup-button {
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+        .date-button, .book-button{
             display: block;
             margin: 5px 0;
             padding: 5px 10px;
-            background-color: #00aaff;
+            background-color: #454242;
             color: white;
             border: none;
             cursor: pointer;
         }
-        #user-buttons {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
     </style>
 </head>
 <body>
+<nav class = "navbar navbar-inverse navbar-fixed-top">
+    <div class = "container-fluid">
+        <div class = "navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class = "navbar-brand" href="/">2조 티켓예매</a>
+        </div>
+        <div id = "menu" class = "collapse navbar-collapse">
+            <ul class="nav navbar navbar-right">
+                <a th:href="|/${loginType}|"></a>
+                <div th:if="${name == null}">
+                    <a href="/members/login" class="btn btn-primary mr-2">로그인</a>
+                    <a href="/members/new" class="btn btn-primary mr-2">회원가입</a>
+                </div>
+                <div th:unless="${name == null}">
+                    <a>[[${name}]]님 환영합니다!</a>
+                    <a href="/logout" class="btn btn-primary mr-2">로그아웃</a>
+                    <a href="/members/mypage" class="btn btn-primary mr-2">마이페이지</a>
+                </div>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="screen">
     <h2 th:text="${post.sname}"></h2>
     <img th:src="@{'/images/' + ${post.sperformer} + '.jpg'}" alt="콘서트 포스터" class="concert-poster" />
 </div>
 <div class="screen">
-    <h2>포스터 정보<br>
+    <h2>공연 정보<br>
     </h2>
     <p class="concert-description" th:text="'제목: ' + ${post.sname}"></p>
     <p class="concert-description" th:text="'출연: ' + ${post.sperformer}"></p>
@@ -66,20 +97,6 @@
 
     </div>
 </div>
-<ul class="nav navbar navbar-right">
-    <a th:href="|/${loginType}|"></a>
-    <div th:if="${name == null}">
-        <a href="/members/login" class="nav-item">로그인</a>
-        <a>/</a>
-        <a href="/members/new" class="nav-item">회원가입</a>
-    </div>
-    <div th:unless="${name == null}">
-        <a>[[${name}]]님 환영합니다!</a>
-        <a href="/logout" class="nav-item">로그아웃</a>
-        <a>/</a>
-        <a href="/mypage" class="nav-item">마이페이지</a>
-    </div>
-</ul>
 <script>
     const dateInput = document.getElementById('date-input');
     const dateButtons = document.querySelectorAll('.date-button');

@@ -39,6 +39,7 @@ public class ProducerController {
             rabbitTemplate.convertAndSend("ticket.queue", json);
 
             Map<String, String> response = new HashMap<>();
+            response.put("message","성공");
             return response;
         } catch (JsonProcessingException e) {
             e.printStackTrace();

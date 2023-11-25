@@ -154,14 +154,15 @@
       <th>예매 번호</th>
       <th>좌석 번호</th>
       <th>가격</th>
-      <th>공연 ID</th>
+      <th>공연 이름</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="ticket : ${tickets}">
       <td th:text="${ticket.id}"></td>
+      <td th:text="${ticket.}"></td>
       <td th:text="${ticket.price}"></td>
-      <td th:text="${ticket.sid}"></td>
+      <td th:text="${ticket.sname}"></td>
     </tr>
     </tbody>
   </table>
